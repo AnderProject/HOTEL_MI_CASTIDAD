@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Hotelera</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'css/tailwind-output.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'icons/hotel.png' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'dashboard' %}" class="text-white text-lg font-semibold">HOTEL MI CASTIDAD</a>
+        </div>
+    </nav>
+    <nav class="bg-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-center items-center space-x-6">
+            <!--<a href="{% url 'dashboard' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/dashboard/' %} bg-gray-300 text-black {% else %} text-black hover:bg-gray-100 {% endif %}">
+                Principal
+            </a>-->
+            <!-- Crear Reserva -->
+            <a href="{% url 'crear_reserva' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/reservas/nueva/' %} bg-blue-100 text-blue-600 {% else %} text-blue-600 hover:bg-blue-100 {% endif %}">
+                Reservar
+            </a>
+    
+            <!-- Reservaciones -->
+            <a href="{% url 'listar_reservas' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/reservas/' %} bg-yellow-100 text-yellow-600 {% else %} text-yellow-600 hover:bg-yellow-100 {% endif %}">
+                Reservaciones
+            </a>
+    
+            <!-- Disponibilidad -->
+            <a href="{% url 'disponibilidad_habitaciones' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/disponibilidad/' %} bg-green-100 text-green-600 {% else %} text-green-600 hover:bg-green-100 {% endif %}">
+                Disponibilidad
+            </a>
+    
+            <!-- Configuración IVA -->
+            <!--<a href="{% url 'listar_iva' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/iva/' %} bg-gray-300 text-black {% else %} text-black hover:bg-gray-100 {% endif %}">
+                IVA
+            </a>-->
+    
+            <!-- Reporte -->
+            <!--<a href="{% url 'filtrar_descargar_reservas' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/filtrar_descargar_reservas/' %} bg-purple-100 text-purple-600 {% else %} text-purple-600 hover:bg-purple-100 {% endif %}">
+                Reporte
+            </a> -->
+    
+            <!-- Cerrar Sesión
+            <a href="{% url 'logout' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/logout/' %} bg-red-100 text-red-600 {% else %} text-red-600 hover:bg-red-100 {% endif %}">
+                Cerrar Sesión
+            </a>-->
+        </div>
+    </nav>
+    
+    
+    <script src="{% static 'Js/ocultarnav.js' %}"></script>
+    <script src="{% static 'Js/inactividad.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{% if message.tags == "success" %}success{% elif message.tags == "info" %}info{% elif message.tags == "warning" %}warning{% elif message.tags == "error" %}error{% endif %}',
+                    title: '{{ message }}',
+                    text: '',
+                    confirmButtonText: 'OK'
+                });
+            {% endfor %}
+        });
+    </script>
+    <!-- SweetAlert Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for message in messages %}
+                    Swal.fire({
+                        icon: '{% if message.tags == "success" %}success{% elif message.tags == "info" %}info{% elif message.tags == "warning" %}warning{% elif message.tags == "error" %}error{% endif %}',
+                        title: '{{ message }}',
+                        text: '',
+                        confirmButtonText: 'OK'
+                    });
+                {% endfor %}
+            });
+        </script>
+    {% endif %}
+    
+
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Agregar IVA</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label for="porcentaje" class="block text-sm font-medium text-gray-700">Porcentaje</label>
+            <input type="number" name="porcentaje" id="porcentaje" step="0.01" min="0" max="100"
+                   class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+            <input type="text" name="descripcion" id="descripcion"
+                   class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Guardar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

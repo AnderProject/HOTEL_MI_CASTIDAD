@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura - {{ reserva.nombre_cliente }} {{ reserva.apellido_cliente }}</title>
+    <link href="{% static 'css/factura.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+</head>
+<body class="bg-gray-100 p-4">
+    <!-- Encabezado de la Factura -->
+    <div class="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-between items-start">
+        <div>
+            <h1 class="text-4xl font-bold text-gray-700">Hotel Mi Castidad</h1>
+            <p>KM26, Virgen de Fatima, Yaguachi, Ecuador</p>
+            <p>Teléfono: +593 98-888-939</p>
+            <p>Correo: info@hotel-@hotmail.com</p>
+        </div>
+        <div>
+            <img src="{% static 'icons/logo.png' %}" alt="#" class="w-20 h-20 rounded-full">
+        </div>
+    </div>
+
+    
+    <div class="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-between">
+        <div class="w-1/2 pr-4">
+            <h2 class="text-xl font-semibold text-gray-600 mb-2">Datos del Cliente</h2>
+            <p><strong>Nombre:</strong> {{ reserva.nombre_cliente }} {{ reserva.apellido_cliente }}</p>
+            <p><strong>Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+            <p><strong>Hora de Reserva:</strong> {{ reserva.hora_reserva }}</p>
+            <p><strong>Habitación:</strong> {{ reserva.numero_habitacion }}</p>
+            <p><strong>Estado:</strong> {{ reserva.estado }}</p>
+        </div>
+
+        <div class="w-1/2">
+            <h2 class="text-xl font-semibold text-gray-600 mb-2">Factura</h2>
+            <p><strong>Número de Factura:</strong> {{ factura.numero_factura }}</p>
+            <p><strong>Fecha de Emisión:</strong> {{ factura.fecha_emision }}</p>
+        </div>
+    </div>
+
+    
+    <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
+        <h2 class="text-xl font-semibold text-gray-600 mb-4">Detalles de la Reserva</h2>
+        <table class="w-full border-collapse">
+            <thead>
+                <tr>
+                    <th class="border p-2 bg-gray-100">Cantidad</th>
+                    <th class="border p-2 bg-gray-100">Descripción</th>
+                    <th class="border p-2 bg-gray-100">Precio Unitario</th>
+                    <th class="border p-2 bg-gray-100">Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border p-2 text-center">1</td>
+                    <td class="border p-2">Reserva de Habitación</td>
+                    <td class="border p-2 text-right">${{ reserva.precio_total }}</td>
+                    <td class="border p-2 text-right">${{ reserva.precio_total }}</td>
+                </tr>
+                {% for extra in extras %}
+                <tr>
+                    <td class="border p-2 text-center">1</td>
+                    <td class="border p-2">{{ extra.descripcion }}</td>
+                    <td class="border p-2 text-right">${{ extra.precio }}</td>
+                    <td class="border p-2 text-right">${{ extra.precio }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

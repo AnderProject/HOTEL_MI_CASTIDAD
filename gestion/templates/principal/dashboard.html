@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+
+<div class="container mx-auto p-6">
+    <h1 class="text-4xl font-semibold mb-4">¡Bienvenido, Administrador!</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-4 rounded-lg shadow-lg text-white">
+            <h3 class="text-3xl font-semibold mb-2">Total de Reservas</h3>
+            <p class="text-5xl font-bold">{{ total_reservas }}</p>
+        </div>
+
+        <div class="bg-gradient-to-r from-green-500 to-green-700 p-4 rounded-lg shadow-lg text-white">
+            <h3 class="text-lg font-semibold mb-2">Habitaciones Más Reservadas</h3>
+            <ul>
+                {% for habitacion in habitaciones_populares %}
+                <li>Habitación {{ habitacion.numero_habitacion }} - {{ habitacion.total }} reservas</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    <!-- Sección de Últimas Reservas Registradas -->
+    <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+        <h3 class="text-lg font-semibold mb-4">Últimas Reservas Registradas</h3>
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 text-sm leading-normal">
+                    <th class="py-3 px-4">Cliente</th>
+                    <th class="py-3 px-4">Fecha de Reserva</th>
+                    <th class="py-3 px-4">Habitación</th>
+                    <th class="py-3 px-4">Estado</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm">
+                {% for reserva in ultimas_reservas %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-4">{{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</td>
+                    <td class="py-3 px-4">📅{{ reserva.fecha_reserva }}</td>
+                    <td class="py-3 px-4">{{ reserva.numero_habitacion }}</td>
+                    <td class="py-3 px-4">{{ reserva.estado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de Reservas por Fecha -->
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-lg font-semibold mb-4">Reservas por Fecha</h3>
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 text-sm leading-normal">
+                    <th class="py-3 px-4">Fecha de Reserva</th>
+                    <th class="py-3 px-4">Número de Reservas</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm">
+                {% for fecha in reservas_por_fecha %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-4">📅{{ fecha.fecha_reserva }}</td>
+                    <td class="py-3 px-4">{{ fecha.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

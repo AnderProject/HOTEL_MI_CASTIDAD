@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Editar Reserva</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Campo Nombre -->
+            <div class="mb-4">
+                <label for="nombre_cliente" class="block text-sm font-medium text-gray-700">Nombre Cliente</label>
+                <input type="text" name="nombre_cliente" id="nombre_cliente" value="{{ reserva.cliente.nombre }}" 
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <!-- Campo Apellido -->
+            <div class="mb-4">
+                <label for="apellido_cliente" class="block text-sm font-medium text-gray-700">Apellido Cliente</label>
+                <input type="text" name="apellido_cliente" id="apellido_cliente" value="{{ reserva.cliente.apellido }}"
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <!-- Campo Número de Cédula -->
+            <div class="mb-4">
+                <label for="cedula_cliente" class="block text-sm font-medium text-gray-700">Número de Cédula</label>
+                <input type="text" name="cedula_cliente" id="cedula_cliente" value="{{ reserva.cliente.cedula }}"
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <!-- Campo Fecha de Reserva -->
+            <div class="mb-4">
+                <label for="fecha_reserva" class="block text-sm font-medium text-gray-700">Fecha de Reserva</label>
+                <input type="date" name="fecha_reserva" id="fecha_reserva" value="{{ reserva.fecha_reserva|date:'Y-m-d' }}"
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <!-- Campo Hora de Reserva -->
+            <div class="mb-4">
+                <label for="hora_reserva" class="block text-sm font-medium text-gray-700">Hora de Reserva</label>
+                <input type="time" name="hora_reserva" id="hora_reserva" value="{{ reserva.hora_reserva }}"
+                       class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+
+            <!-- Campo Estado de la Reserva -->
+            <div class="mb-4">
+                <label for="estado" class="block text-sm font-medium text-gray-700">Estado de la Reserva</label>
+                <select name="estado" id="estado" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="Pendiente" {% if reserva.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                    <option value="Ocupada" {% if reserva.estado == 'Ocupada' %}selected{% endif %}>Ocupada</option>
+                    <option value="Limpieza" {% if reserva.estado == 'Limpieza' %}selected{% endif %}>Limpieza</option>
+                </select>
+            </div>
+
+            <!-- Campo Duración de la Reserva -->
+            <div class="mb-4">
+                <label for="duracion_reserva" class="block text-sm font-medium text-gray-700">Duración de la Reserva (en horas)</label>
+                <input type="number" name="duracion_reserva" id="duracion_reserva" value="{{ reserva.duracion_reserva }}" min="1"
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <!-- Campo Horas Extras -->
+            <div class="mb-4">
+                <label for="horas_extras" class="block text-sm font-medium text-gray-700">Horas Extras</label>
+                <input type="number" name="horas_extras" id="horas_extras" value="{{ reserva.horas_extras }}" min="0"
+                       class="w-full p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Campo Número de Habitación -->
+            <div class="mb-4">
+                <label for="numero_habitacion" class="block text-sm font-medium text-gray-700">Número de Habitación</label>
+                <input type="number" name="numero_habitacion" id="numero_habitacion" value="{{ reserva.numero_habitacion }}" min="1"
+                       class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed" readonly>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded-lg">Guardar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

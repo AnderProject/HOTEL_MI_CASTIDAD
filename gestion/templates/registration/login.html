@@ -1,0 +1,38 @@
+{% extends 'base_login.html' %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-800">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl md:max-w-2xl">
+        <h2 class="text-3xl font-bold text-center mb-6">Bienvenido</h2>
+        <p class="text-center font-bold text-gray-600 mb-4">Administrador</p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="username" class="block mb-2 text-sm font-medium text-gray-700">Usuario</label>
+                <input type="text" name="username" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese su usuario" required>
+            </div>
+            
+            <div class="mb-4">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Contraseña</label>
+                <input type="password" name="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese su contraseña" required>
+            </div>
+            
+            <button type="submit" class="w-full p-3 bg-gray-800 text-white rounded-lg shadow-md font-bold text-lg hover:bg-green-700 transition-all duration-300">
+                Iniciar Sesión
+            </button>
+        </form>
+        
+        <!-- Mensaje de Error con JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const errorMessage = "{{ error_message }}";
+                if (errorMessage) {
+                    // Muestra el mensaje de error en una alerta o inserta en la página
+                    alert(errorMessage);
+                }
+            });
+        </script>
+    </div>
+</div>
+{% endblock %}

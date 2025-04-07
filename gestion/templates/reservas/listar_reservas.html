@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-semibold mb-6 text-center">📅 Lista de Reservas</h2>
+
+    <!-- Buscador de Reservas -->
+    <form method="GET" action="" class="mb-6 text-center">
+        <input type="text" name="q" placeholder="🔍 Buscar por cliente o fecha" class="p-2 border border-gray-300 rounded-lg w-full lg:w-1/2 mb-4 shadow">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow">Buscar</button>
+    </form>
+
+    <!-- Pestañas de Reservas -->
+    <div class="flex justify-center mb-8">
+        <button id="btn-pendientes" onclick="showSection('pendientes')" class="tab-btn px-4 py-2 text-lg font-semibold text-gray-700 bg-gray-200 rounded-l-lg hover:bg-blue-300">Pendientes</button>
+        <button id="btn-ocupadas" onclick="showSection('ocupadas')" class="tab-btn px-4 py-2 text-lg font-semibold text-gray-700 bg-gray-200 hover:bg-blue-300">Ocupadas</button>
+        <button id="btn-finalizadas" onclick="showSection('finalizadas')" class="tab-btn px-4 py-2 text-lg font-semibold text-gray-700 bg-gray-200 rounded-r-lg hover:bg-blue-300">Finalizadas</button>
+    </div>
+    
+
+    <!-- Sección de Reservas Pendientes -->
+    <div id="pendientes" class="section hidden">
+        <h3 class="text-xl font-bold text-yellow-700 mb-4 text-center">✏️ Reservas Pendientes</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for reserva in reservas_pendientes %}
+            <div class="bg-red-200 p-6 rounded-lg shadow-lg">
+                <p class="text-gray-600"><strong>🧍 Cliente: </strong>  {{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</p>
+                <p class="text-gray-600"><strong>📅 Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+                <p class="text-gray-600"><strong>🕒 Hora de Reserva:</strong> {{ reserva.hora_reserva }}</p>
+                <p class="text-gray-600"><strong>🏠 Habitación:</strong> {{ reserva.numero_habitacion }}</p>
+                <p class="text-gray-600"><strong>Estado:</strong> Pendiente</p>
+                <p class="text-gray-600"><strong>💵 Precio Total:</strong> ${{ reserva.precio_total }}</p>
+                <div class="mt-4 space-x-2">
+                    <a href="{% url 'editar_reserva' reserva.pk %}" class="text-blue-500 hover:underline">✏️ Editar</a> |
+                    <a href="{% url 'eliminar_reserva' reserva.pk %}" class="text-red-500 hover:underline">❌ Eliminar</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No hay reservas pendientes.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sección de Reservas Ocupadas -->
+    <div id="ocupadas" class="section hidden ">
+        <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">🏠 Reservas Ocupadas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for reserva in reservas_ocupadas %}
+            <div class="bg-gray-200 p-2 rounded-lg shadow-lg">
+                <p class="text-gray-600"><strong>🧍 Cliente: </strong>  {{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</p>
+                <p class="text-gray-600"><strong>📅 Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+                <p class="text-gray-600"><strong>🕒 Hora de Reserva:</strong> {{ reserva.hora_reserva }}</p>
+                <p class="text-gray-600"><strong>🏠 Habitación:</strong> {{ reserva.numero_habitacion }}</p>
+                <p class="text-gray-600"><strong>✅Estado:</strong> {{ reserva.estado }}</p>
+                <p class="text-gray-600"><strong>💵 Precio Total:</strong> ${{ reserva.precio_total }}</p>
+                <p class="text-red-600"><strong>⏳ Tiempo Restante:</strong> 
+                    <span id="contador-{{ reserva.id }}"></span>
+                </p>
+                <div class="mt-4 space-x-2">
+                    <a href="{% url 'editar_reserva' reserva.pk %}" class="text-blue-500  font-bold hover:underline">✏️ Editar</a> |
+                    <a href="{% url 'eliminar_reserva' reserva.pk %}" class="text-red-500 font-bold hover:underline">❌ Eliminar</a> |
+                    <a href="{% url 'cambiar_a_limpieza' reserva.pk %}" class="text-yellow-500 font-bold hover:underline">🧼 Limpieza</a> |
+                    <a href="{% url 'generar_factura_pdf' reserva.pk %}" class="text-green-500 font-bold hover:underline">🧾 Factura</a> |
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No hay reservas ocupadas.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+
+    <!-- Sección de Reservas Finalizadas -->
+    <div id="finalizadas" class="section hidden">
+        <h3 class="text-xl font-bold text-green-700 mb-4 text-center">✅ Reservas Finalizadas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for reserva in reservas_finalizadas %}
+            <div class="bg-green-200 p-6 rounded-lg shadow-lg">
+                <p class="text-gray-600"><strong>🧍 Cliente: </strong>  {{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</p>
+                <p class="text-gray-600"><strong>📅 Fecha de Reserva:</strong> {{ reserva.fecha_reserva }}</p>
+                <p class="text-gray-600"><strong>🕒 Hora de Reserva:</strong> {{ reserva.hora_reserva }}</p>
+                <p class="text-gray-600"><strong>🏠 Habitación:</strong> {{ reserva.numero_habitacion }}</p>
+                <p class="text-gray-600"><strong>💵 Precio Total:</strong> ${{ reserva.precio_total }}</p>
+                <div class="mt-4 space-x-2">
+                    <a href="{% url 'generar_factura_pdf' reserva.pk %}" class="text-red-600 font-bold hover:underline">🧾 Generar Factura</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-gray-500">No hay reservas finalizadas.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="{% static 'js/reservas_countdown.js' %}"></script>
+<script src="{% static 'js/ventana_activa.js' %}"></script>
+
+<script>
+    const reservas = [
+        {% for reserva in reservas_ocupadas %}
+        {
+            id: "{{ reserva.id }}",
+            endTime: "{{ reserva.tiempo_termino|date:'Y-m-d H:i:s' }}"
+        },
+        {% endfor %}
+    ];
+    initCountdowns(reservas);
+</script>
+
+{% endblock %}

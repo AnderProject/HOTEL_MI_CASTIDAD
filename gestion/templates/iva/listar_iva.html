@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="flex justify-center pt-10 bg-gray-100 min-h-screen">
+    <div class="w-full max-w-4xl bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">IVA Disponibles</h2>
+        
+        <div class="flex justify-end mb-4">
+            <a href="{% url 'agregar_iva' %}" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600">
+                Agregar IVA
+            </a>
+        </div>
+        
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr>
+                    <th class="py-3 px-4 bg-gray-200 border-b border-gray-300 text-gray-600 font-semibold">Porcentaje</th>
+                    <th class="py-3 px-4 bg-gray-200 border-b border-gray-300 text-gray-600 font-semibold">Motivo</th>
+                    <th class="py-3 px-4 bg-gray-200 border-b border-gray-300 text-gray-600 font-semibold">Activo</th>
+                    <th class="py-3 px-4 bg-gray-200 border-b border-gray-300 text-gray-600 font-semibold">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for iva in ivas %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="py-3 px-4 border-b">{{ iva.porcentaje|floatformat:2 }}%</td>
+                        <td class="py-3 px-4 border-b">{{ iva.descripcion }}</td>
+                        <td class="py-3 px-4 border-b">{{ iva.activo|yesno:"Sí,No" }}</td>
+                        <td class="py-3 px-4 border-b">
+                            {% if iva.activo %}
+                                <a href="{% url 'desactivar_iva' iva.id %}" class="text-red-500 hover:underline">Desactivar</a>
+                            {% else %}
+                                <a href="{% url 'activar_iva' iva.id %}" class="text-green-500 hover:underline">Activar</a>
+                            {% endif %}
+                            | <a href="{% url 'eliminar_iva' iva.id %}" class="text-red-500 hover:underline">Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="py-4 px-4 text-center text-gray-500">No hay valores de IVA registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

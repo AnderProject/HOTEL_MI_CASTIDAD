@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Hotelera</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{% static 'css/tailwind-output.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'icons/hotel.png' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<script src="{% static 'Js/ocultarnav.js' %}"></script>
+<script src="{% static 'Js/inactividad.js' %}"></script>
+<body class="bg-gray-100">
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'dashboard' %}" class="text-white text-lg font-semibold">Mi Hotel</a>
+        </div>
+    </nav>
+    <nav class="bg-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-center items-center space-x-6">
+            <!-- Crear Reserva -->
+            <a href="{% url 'crear_reserva' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/crear_reserva/' %} bg-blue-100 text-blue-600 {% else %} text-blue-600 hover:bg-blue-100 {% endif %}">
+                Crear Reserva
+            </a>
+    
+            <!-- Reservaciones -->
+            <a href="{% url 'listar_reservas' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/reservas/' %} bg-yellow-100 text-yellow-600 {% else %} text-yellow-600 hover:bg-yellow-100 {% endif %}">
+                Reservaciones
+            </a>
+    
+            <!-- Disponibilidad -->
+            <a href="{% url 'disponibilidad_habitaciones' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/disponibilidad/' %} bg-green-100 text-green-600 {% else %} text-green-600 hover:bg-green-100 {% endif %}">
+                Disponibilidad
+            </a>
+    
+            <!-- Configuración IVA -->
+            <a href="{% url 'listar_iva' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/listar_iva/' %} bg-gray-100 text-black {% else %} text-black hover:bg-gray-100 {% endif %}">
+                Configuración IVA
+            </a>
+    
+            <!-- Reporte -->
+            <a href="{% url 'filtrar_descargar_reservas' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/filtrar_descargar_reservas/' %} bg-purple-100 text-purple-600 {% else %} text-purple-600 hover:bg-purple-100 {% endif %}">
+                Reporte
+            </a>
+    
+            <!-- Cerrar Sesión -->
+            <a href="{% url 'logout' %}" 
+               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               {% if request.path == '/logout/' %} bg-red-100 text-red-600 {% else %} text-red-600 hover:bg-red-100 {% endif %}">
+                Cerrar Sesión
+            </a>
+        </div>
+    </nav>
+    
+    
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Historial de Reservaciones</h1>
+
+        <form method="get" class="mb-4 flex space-x-4">
+            <div class="flex items-center">
+                <label for="start_date" class="text-gray-700 mr-2">Fecha Inicio:</label>
+                <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="border rounded p-1">
+            </div>
+            <div class="flex items-center">
+                <label for="end_date" class="text-gray-700 mr-2">Fecha Fin:</label>
+                <input type="date" name="end_date" id="end_date" value="{{ end_date }}" class="border rounded p-1">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white rounded px-3 py-1">Buscar</button>
+            <button type="submit" name="descargar" value="1" class="bg-green-500 text-white rounded px-3 py-1">Descargar Excel</button>
+        </form>
+
+        {% if reservas %}
+            <table class="table-auto w-full bg-white shadow-md rounded border">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Nombre Cliente</th>
+                        <th class="py-3 px-6 text-left">Apellido Cliente</th>
+                        <th class="py-3 px-6 text-left">Fecha Reserva</th>
+                        <th class="py-3 px-6 text-left">Número Habitación</th>
+                        <th class="py-3 px-6 text-left">Duración Reserva</th>
+                        <th class="py-3 px-6 text-left">Horas Extras</th>
+                        <th class="py-3 px-6 text-left">IVA</th>
+                        <th class="py-3 px-6 text-left">Precio Total</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    {% for reserva in reservas %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6">{{ reserva.cliente.nombre }}</td>
+                        <td class="py-3 px-6">{{ reserva.cliente.apellido }}</td>
+                        <td class="py-3 px-6">{{ reserva.fecha_reserva }}</td>
+                        <td class="py-3 px-6">{{ reserva.numero_habitacion }}</td>
+                        <td class="py-3 px-6">{{ reserva.duracion_reserva }}</td>
+                        <td class="py-3 px-6">{{ reserva.horas_extras }}</td>
+                        <td class="py-3 px-6">{{ reserva.iva_aplicado.porcentaje }}%</td>
+                        <td class="py-3 px-6">${{ reserva.precio_total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center text-gray-500 mt-6">No hay reservas en el rango de fechas especificado.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

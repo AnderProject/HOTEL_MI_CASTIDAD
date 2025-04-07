@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Modal personalizado sin Bootstrap -->
+<div id="customModal" class="modal-custom">
+    <div class="modal-content-custom">
+        <span class="close-button-custom">&times;</span>
+        <h2>Reserva Creada</h2>
+        <p>¡La reserva ha sido creada exitosamente!</p>
+        <button id="close-modal-button" class="accept-button-custom">Aceptar</button>
+    </div>
+</div>
+
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-4 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-semibold mb-6 text-center">Crear Nueva Reserva</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+
+            <!-- Campo Número de Cédula -->
+            <div class="mb-4">
+                <label for="cedula_cliente" class="block text-sm font-medium text-gray-700">Número de Cédula</label>
+                <input type="text" name="cedula_cliente" id="cedula_cliente" 
+                       class="w-full p-2 border border-gray-300 rounded" required
+                       pattern="\d{10}" title="Debe contener exactamente 10 dígitos">
+            </div>
+
+            
+            <!-- Campo Nombre Cliente -->
+            <div class="mb-4">
+                <label for="nombre_cliente" class="block text-sm font-medium text-gray-700">Nombre Cliente</label>
+                <input type="text" name="nombre_cliente" id="nombre_cliente" 
+                       class="w-full p-2 border border-gray-300 rounded" required
+                       pattern="[a-zA-Z\s]+" title="Solo se permiten letras y espacios">
+            </div>
+
+            <!-- Campo Apellido Cliente -->
+            <div class="mb-4">
+                <label for="apellido_cliente" class="block text-sm font-medium text-gray-700">Apellido Cliente</label>
+                <input type="text" name="apellido_cliente" id="apellido_cliente" 
+                       class="w-full p-2 border border-gray-300 rounded" required
+                       pattern="[a-zA-Z\s]+" title="Solo se permiten letras y espacios">
+            </div>
+
+            <!-- Campo Fecha de Reserva -->
+            <div class="mb-4">
+                <label for="fecha_reserva" class="block text-sm font-medium text-gray-700">Fecha de Reserva</label>
+                <input type="date" name="fecha_reserva" id="fecha_reserva" 
+                       class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+
+            <!-- Campo Hora de Reserva -->
+            <div class="mb-4">
+                <label for="hora_reserva" class="block text-sm font-medium text-gray-700">Hora de Reserva</label>
+                <input type="time" name="hora_reserva" id="hora_reserva" 
+                       class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+
+            <!-- Campo Estado de la Reserva -->
+            <div class="mb-4">
+                <label for="estado" class="block text-sm font-medium text-gray-700">Estado de la Reserva</label>
+                <select name="estado" id="estado" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="Pendiente" selected>Pendiente</option>
+                    <option value="Ocupada">Ocupada</option>
+                </select>
+            </div>
+
+            <!-- Campo Duración de la Reserva (selector dinámico) -->
+            <div class="mb-4">
+                <label for="duracion_reserva" class="block text-sm font-medium text-gray-700">Duración de la Reserva (en horas)</label>
+                <select name="duracion_reserva" id="duracion_reserva" class="w-full p-2 border border-gray-300 rounded">
+                    {% for i in duracion_rango %}
+                    <option value="{{ i }}">{{ i }} horas</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Campo Horas Extras (selector dinámico) -->
+            <div class="mb-4">
+                <label for="horas_extras" class="block text-sm font-medium text-gray-700">Horas Extras</label>
+                <select name="horas_extras" id="horas_extras" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="0" selected>Ninguna</option>
+                    {% for i in horas_extra_rango %}
+                    <option value="{{ i }}">{{ i }} horas</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Campo Número de Habitación -->
+            <div class="mb-4">
+                <label for="numero_habitacion" class="block text-sm font-medium text-gray-700">Número de Habitación</label>
+                <select name="numero_habitacion" id="numero_habitacion" class="w-full p-2 border border-gray-300 rounded" required>
+                    {% for habitacion in habitaciones_disponibles %}
+                    <option value="{{ habitacion }}">Habitación {{ habitacion }}</option>
+                    {% empty %}
+                    <option>No hay habitaciones disponibles</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded-lg">Guardar</button>
+            <p class="text-gray-600 mt-4"><strong>Precio Estimado:</strong> $10.00 (para las primeras 3 horas)</p>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'Js/cedula.js' %}"></script>
+<script src="{% static 'Js/crear_reserva.js' %}"></script>
+<script src="{% static 'Js/config.js' %}"></script>
+<script>
+    window.createReservaUrl = "{% url 'crear_reserva' %}";
+    window.csrfToken = "{{ csrf_token }}";
+    window.redirectToListarReservas = "{% url 'listar_reservas' %}";  <!-- URL para redirigir -->
+</script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-semibold mb-8 text-center">Disponibilidad de Habitaciones</h2>
+
+    <div class="space-y-8">
+        <!-- Sección de Habitaciones Disponibles -->
+        <div>
+            <h3 class="text-2xl font-bold text-green-600 mb-4">✅Habitaciones Disponibles</h3>
+            <div class="overflow-y-auto max-h-30 border p-4 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {% for habitacion in habitaciones_disponibles %}
+                    <div class="bg-green-200 p-6 rounded-lg shadow-lg flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold"><i class="fas fa-door-open text-green-600"></i> Habitación {{ habitacion }}</h3>
+                            <p class="text-sm font-bold text-green-600">Disponible</p>
+                        </div>
+                        <img src="{% static 'icons/puerta_abierta.png' %}" alt="Puerta Abierta" class="w-8 h-8">
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500">No hay habitaciones disponibles hoy.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Habitaciones Ocupadas -->
+        <div>
+            <h3 class="text-2xl font-bold text-red-600 mb-4">🚫Habitaciones Ocupadas</h3>
+            <div class="overflow-y-auto max-h-30 border p-4 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {% for habitacion in habitaciones_ocupadas %}
+                    <div class="bg-red-200 p-6 rounded-lg shadow-lg flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold"><i class="fas fa-bed text-red-600"></i> Habitación {{ habitacion }}</h3>
+                            <p class="text-sm font-bold text-red-600">Ocupada</p>
+                        </div>
+                        <img src="{% static 'icons/puerta_cerrada.png' %}" alt="Puerta Cerrada" class="w-8 h-8">
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500">No hay habitaciones ocupadas.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Habitaciones en Limpieza -->
+        <div>
+            <h3 class="text-2xl font-bold text-yellow-600 mb-4">🧼Habitaciones en Limpieza</h3>
+            <div class="overflow-y-auto max-h-30 border p-4 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {% for habitacion in habitaciones_limpieza %}
+                    <div class="bg-yellow-200 p-6 rounded-lg shadow-lg flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold"><i class="fas fa-broom text-yellow-600"></i> Habitación {{ habitacion }}</h3>
+                            <p class="text-sm font-bold  text-yellow-600">En Limpieza</p>
+                        </div>
+                        <img src="{% static 'icons/limpieza.png' %}" alt="En Limpieza" class="w-8 h-8">
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500">No hay habitaciones en limpieza hoy.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
