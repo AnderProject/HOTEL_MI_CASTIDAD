@@ -26,21 +26,21 @@
             </a>-->
             <!-- Crear Reserva -->
             <a href="{% url 'crear_reserva' %}" 
-               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               class="font-semibold text-sm py-2  rounded-full transition-colors
                {% if request.path == '/reservas/nueva/' %} bg-blue-100 text-blue-600 {% else %} text-blue-600 hover:bg-blue-100 {% endif %}">
                 Reservar
             </a>
     
             <!-- Reservaciones -->
             <a href="{% url 'listar_reservas' %}" 
-               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               class="font-semibold text-sm py-2 rounded-full transition-colors
                {% if request.path == '/reservas/' %} bg-yellow-100 text-yellow-600 {% else %} text-yellow-600 hover:bg-yellow-100 {% endif %}">
                 Reservaciones
             </a>
     
             <!-- Disponibilidad -->
             <a href="{% url 'disponibilidad_habitaciones' %}" 
-               class="font-semibold text-sm py-2 px-6 rounded-full transition-colors
+               class="font-semibold text-sm py-2  rounded-full transition-colors
                {% if request.path == '/disponibilidad/' %} bg-green-100 text-green-600 {% else %} text-green-600 hover:bg-green-100 {% endif %}">
                 Disponibilidad
             </a>
